@@ -37,9 +37,11 @@ template<typename T>
 class CBranch {
 public:
     CBranch():m_branch_level(-1){
-
+        m_branch_nodes.reserve(50);
     }
-    ~CBranch(){}
+    ~CBranch(){
+        m_branch_nodes.clear();
+    }
     CBranch(const CBranch& aCopy):m_branch_level(aCopy.m_branch_level),m_branch_nodes(aCopy.m_branch_nodes){
 
     }
@@ -65,7 +67,7 @@ public:
         return m_branch_nodes;
     }
 private:
-    int m_branch_level;                                         // the branch level, e.g. the trunk has level 1.
+    int m_branch_level;                                         // the branch level, e.g. the trunk is level 1.
     std::vector<std::shared_ptr<CDAGNode<T>>> m_branch_nodes;   // store all the nodes belongs to this branch by shared pointers.
 };
 
@@ -75,8 +77,12 @@ private:
 template<typename T>
 class CBranchLevelSet {
 public:
-    CBranchLevelSet(){}
-    ~CBranchLevelSet(){}
+    CBranchLevelSet(){
+        m_branch_array.reserve(100);
+    }
+    ~CBranchLevelSet(){
+        m_branch_array.clear();
+    }
     CBranchLevelSet(const CBranchLevelSet& aCopy):m_branch_array(aCopy.m_branch_array){
 
     }
@@ -180,12 +186,14 @@ private:
 
 template<typename T>
 CDAGTree<T>::CDAGTree() {
-
+    m_node_array.reserve(6000);
+    m_branches_array.reserve(2000);
 }
 
 template<typename T>
 CDAGTree<T>::~CDAGTree() {
-
+    m_node_array.clear();
+    m_branches_array.clear();
 }
 
 template<typename T>
