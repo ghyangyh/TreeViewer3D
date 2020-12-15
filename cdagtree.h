@@ -66,6 +66,9 @@ public:
     const std::vector<std::shared_ptr<CDAGNode<T>>>& get_branch_nodes() const {
         return m_branch_nodes;
     }
+    size_t get_branch_nodes_nums() const {
+        return m_branch_nodes.size();
+    }
 private:
     int m_branch_level;                                         // the branch level, e.g. the trunk is level 1.
     std::vector<std::shared_ptr<CDAGNode<T>>> m_branch_nodes;   // store all the nodes belongs to this branch by shared pointers.
@@ -102,6 +105,9 @@ public:
     }
     const std::vector<std::shared_ptr<CBranch<T>>>& get_branch_array() const {
         return m_branch_array;
+    }
+    size_t get_branch_nums() const {
+        return m_branch_array.size();
     }
 private:
     std::vector<std::shared_ptr<CBranch<T>>> m_branch_array;
@@ -141,6 +147,20 @@ public:
 
     size_t get_total_num_of_branch_levels() const {
         return m_branches_array.size();
+    }
+    size_t get_total_num_of_branches() const {
+        size_t branch_nums(0);
+        for(const auto& bs : m_branches_array)
+            branch_nums += bs.get_branch_nums();
+        return branch_nums;
+    }
+
+    const std::shared_ptr<CDAGNode<T>>& get_root_node_ptr() const {
+        return m_node_array[0];
+    }
+
+    const std::vector<CBranchLevelSet<T>>& get_branches() const {
+        return m_branches_array;
     }
 protected:
     /*
@@ -317,6 +337,7 @@ void CDAGTree<T>::extract_branches_recursive(int aLevel,
 
             // extract a branch rooted at the node p
             std::shared_ptr<CBranch<T>> a_branch_ptr(new CBranch<T>());
+            a_branch_ptr->add_node(p);
             extract_branch_at_level(aLevel, p, a_up_dir, (*a_branch_ptr));
             a_branch_set.add_branch(a_branch_ptr);
 
@@ -333,9 +354,12 @@ template<typename T>
 void CDAGTree<T>::extract_branches() {
     // extract the trunk branch
     int a_level(1);
+    // create a new branch
     std::shared_ptr<CBranch<T>> trunk_branch_ptr(new CBranch<T>());
+    trunk_branch_ptr->add_node(m_node_array[0]);
     Vector3t a_up_dir(0, 1, 0);
     extract_branch_at_level(a_level, m_node_array[0], a_up_dir, (*trunk_branch_ptr));
+    // add the trunk branch to the branch set
     CBranchLevelSet<T> trunk_branch_set;
     trunk_branch_set.add_branch(trunk_branch_ptr);
     m_branches_array.push_back(trunk_branch_set);
