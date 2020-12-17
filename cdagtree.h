@@ -12,6 +12,16 @@
 #include <Eigen/Dense>
 
 template<typename T>
+struct CBBox {
+    T m_x_min;
+    T m_x_max;
+    T m_y_min;
+    T m_y_max;
+    T m_z_min;
+    T m_z_max;
+}
+
+template<typename T>
 struct CDAGNode {
     // the 3d position
     T m_x;
@@ -162,6 +172,8 @@ public:
     const std::vector<CBranchLevelSet<T>>& get_branches() const {
         return m_branches_array;
     }
+
+    void compute_bounding_box(CBBox<T>& aBox);
 protected:
     /*
      * Build the tree graph from a parent node in a depth-first recursive way.
@@ -366,6 +378,30 @@ void CDAGTree<T>::extract_branches() {
 
     // extract other branchs started from the trunk
     extract_branches_recursive(a_level+1, trunk_branch_ptr->get_branch_nodes());
+}
+
+template<typename T>
+void CDAGTree<T>::compute_bounding_box(CBBox<T>& aBox) {
+    aBox.m_x_min = std::numeric_limits<T>::max();
+    aBox.m_x_max = std::numeric_limits<T>::min();
+    aBox.m_y_min = std::numeric_limits<T>::max();
+    aBox.m_y_max = std::numeric_limits<T>::min();
+    aBox.m_z_min = std::numeric_limits<T>::max();
+    aBox.m_z_max = std::numeric_limits<T>::min();
+    for(const auto& p : m_node_array) {
+        if(p->m_x < aBox.m_x_min)
+            aBox.m_x_min = p->m_x;
+        if(p->m_x > aBox.m_x_max)
+            aBox.m_x_max = p->m_x;
+        if(p->m_y < aBox.m_y_min)
+            aBox.m_y_min = p->m_y;
+        if(p->m_y > aBox.m_y_max)
+            aBox.m_y_max = p->m_y;
+        if(p->m_z < aBox.m_z_min)
+            aBox.m_z_min = p->m_z;
+        if(p->m_z > aBox.m_z_max)
+            aBox.m_z_max = p->m_z;
+    }
 }
 
 

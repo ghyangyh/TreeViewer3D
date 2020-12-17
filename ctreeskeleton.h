@@ -30,6 +30,7 @@ public:
      * the given level.
     */
     void draw_to_level(int aLevel);
+protected:
     /*
      * Create a tree skeleton from the dagtree.
     */

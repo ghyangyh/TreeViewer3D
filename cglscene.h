@@ -3,6 +3,8 @@
 
 #include "GLUtilities/camera.h"
 #include "Eigen/Dense"
+#include "ctreeskeleton.h"
+#include <memory>
 
 /*
  * The CGLScene represents a typical 3D Scene which is to be
@@ -17,23 +19,23 @@
 class CGLScene
 {
 public:
-    CGLScene(float aSceneScale);
+    CGLScene();
     ~CGLScene();
     CGLScene(const CGLScene&)=delete;
     CGLScene& operator=(const CGLScene&)=delete;
 public:
     static void set_framebuffer_size(int width, int height);
     void setup(int* argc, char** argv);
+    void create_tree_skeleton();
     void render();
 protected:
-    void init();
+    static void init();
     static void reshape(int w, int h);
     static void display();
     static void keyboard(unsigned char key, int x, int y);
     static void mouse_input(int button, int state, int x, int y);
     static void mouse_motion(int x, int y);
 private:
-    float m_scene_scale;
     static int m_framebuffer_width;
     static int m_framebuffer_height;
     static int m_mouse_pos_x, m_mouse_pos_y;
@@ -41,6 +43,7 @@ private:
     static int m_model_loc, m_view_loc, m_proj_loc;
     static int m_shader_program;
     static Camera m_fps_camera;
+    static std::shared_ptr<CTreeSkeleton> m_tree_skeleton_ptr;
 };
 
 #endif // CGLSCENE_H
