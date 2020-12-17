@@ -37,10 +37,10 @@ private:
     static int m_framebuffer_width;
     static int m_framebuffer_height;
     static int m_mouse_pos_x, m_mouse_pos_y;
-    Eigen::Matrix4f m_model_mat, m_view_mat, m_proj_mat;
-    int m_model_loc, m_view_loc, m_proj_loc;
-    int m_shader_program;
-    Camera m_fps_camera;
+    static Eigen::Matrix4f m_model_mat, m_view_mat, m_proj_mat;
+    static int m_model_loc, m_view_loc, m_proj_loc;
+    static int m_shader_program;
+    static Camera m_fps_camera;
 };
 
 #endif // CGLSCENE_H
