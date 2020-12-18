@@ -19,16 +19,16 @@
 class CGLScene
 {
 public:
-    CGLScene();
+    CGLScene(int aFrameBufferWidth, int aFrameBufferHeight);
     ~CGLScene();
     CGLScene(const CGLScene&)=delete;
     CGLScene& operator=(const CGLScene&)=delete;
 public:
     static void set_framebuffer_size(int width, int height);
     void setup(int* argc, char** argv);
-    void create_tree_skeleton();
     void render();
 protected:
+    void create_tree_skeleton();
     static void init();
     static void reshape(int w, int h);
     static void display();

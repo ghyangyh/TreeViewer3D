@@ -33,9 +33,10 @@ void CGLScene::set_framebuffer_size(int width, int height) {
     m_framebuffer_height = height;
 }
 
-CGLScene::CGLScene():
+CGLScene::CGLScene(int aFrameBufferWidth, int aFrameBufferHeight)
 {
-
+    m_framebuffer_width = aFrameBufferWidth;
+    m_framebuffer_height = aFrameBufferHeight;
 }
 
 CGLScene::~CGLScene() {
@@ -202,7 +203,8 @@ void CGLScene::setup(int* argc, char** argv) {
     // Query and print some opengl informations
     restart_gl_log("gl_params.txt");
     log_gl_params("gl_params.txt");
+}
 
-    glutMainLoop();
-
+void CGLScene::render() {
+     glutMainLoop();
 }

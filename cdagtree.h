@@ -19,7 +19,7 @@ struct CBBox {
     T m_y_max;
     T m_z_min;
     T m_z_max;
-}
+};
 
 template<typename T>
 struct CDAGNode {

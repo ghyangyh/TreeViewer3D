@@ -2,7 +2,7 @@
 
 #include "GL/glew.h"
 
-
+#include <opencv2/core.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
 
@@ -12,7 +12,7 @@
 using namespace std;
 
 bool load_image(const string& aFileName, cv::Mat& aTextureImage) {
-	aTextureImage = cv::imread(aFileName, cv::IMREAD_UNCHANGED);
+    aTextureImage = cv::imread(aFileName, cv::IMREAD_UNCHANGED);
 	if (aTextureImage.empty()) {
 		cout << "ERROR: Failed load the texture image: " << aFileName << endl;
 		return false;
